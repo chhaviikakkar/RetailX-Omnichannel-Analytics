@@ -1,0 +1,41 @@
+store_id,store_name,city,state,store_type,opening_date
+STR01,Store Ahmedabad 1,Ahmedabad,Gujarat,Mall Outlet,2021-11-25
+STR02,Store Indore 2,Indore,Madhya Pradesh,Standalone,2020-04-04
+STR03,Store Mumbai 3,Mumbai,Maharashtra,Standalone,2021-01-17
+STR04,Store Patna 4,Patna,Bihar,Kiosk,2021-01-11
+STR05,Store Pune 5,Pune,Maharashtra,Kiosk,2021-10-16
+STR06,Store Indore 6,Indore,Madhya Pradesh,Kiosk,2019-11-23
+STR07,Store Kochi 7,Kochi,Kerala,Kiosk,2020-03-26
+STR08,Store Pune 8,Pune,Maharashtra,Flagship,2019-11-17
+STR09,Store Chennai 9,Chennai,Tamil Nadu,Mall Outlet,2020-02-01
+STR10,Store Lucknow 10,Lucknow,Uttar Pradesh,Mall Outlet,2019-07-18
+STR11,Store Lucknow 11,Lucknow,Uttar Pradesh,Standalone,2019-01-15
+STR12,Store Pune 12,Pune,Maharashtra,Flagship,2022-09-04
+STR13,Store Lucknow 13,Lucknow,Uttar Pradesh,Standalone,2019-03-12
+STR14,Store Patna 14,Patna,Bihar,Standalone,2022-06-20
+STR15,Store Jaipur 15,Jaipur,Rajasthan,Standalone,2018-11-27
+STR16,Store Hyderabad 16,Hyderabad,Telangana,Mall Outlet,2022-01-08
+STR17,Store Pune 17,Pune,Maharashtra,Mall Outlet,2020-03-19
+STR18,Store Pune 18,Pune,Maharashtra,Mall Outlet,2020-12-22
+STR19,Store Bengaluru 19,Bengaluru,Karnataka,Standalone,2020-01-11
+STR20,Store Bengaluru 20,Bengaluru,Karnataka,Standalone,2020-11-13
+STR21,Store Nagpur 21,Nagpur,Maharashtra,Standalone,2020-09-16
+STR22,Store Kolkata 22,Kolkata,West Bengal,Mall Outlet,2021-01-09
+STR23,Store Patna 23,Patna,Bihar,Mall Outlet,2020-06-23
+STR24,Store Ahmedabad 24,Ahmedabad,Gujarat,Mall Outlet,2021-01-19
+STR25,Store Delhi 25,Delhi,Delhi,Standalone,2022-03-20
+STR26,Store Indore 26,Indore,Madhya Pradesh,Standalone,2020-08-22
+STR27,Store Kochi 27,Kochi,Kerala,Mall Outlet,2020-05-07
+STR28,Store Chennai 28,Chennai,Tamil Nadu,Kiosk,2019-06-04
+STR29,Store Hyderabad 29,Hyderabad,Telangana,Mall Outlet,2020-05-04
+STR30,Store Hyderabad 30,Hyderabad,Telangana,Standalone,2019-05-26
+STR31,Store Surat 31,Surat,Gujarat,Mall Outlet,2019-08-18
+STR32,Store Jaipur 32,Jaipur,Rajasthan,Mall Outlet,2022-09-22
+STR33,Store Ahmedabad 33,Ahmedabad,Gujarat,Standalone,2019-04-03
+STR34,Store Mumbai 34,Mumbai,Maharashtra,Mall Outlet,2020-10-31
+STR35,Store Jaipur 35,Jaipur,Rajasthan,Mall Outlet,2022-04-02
+STR36,Store Patna 36,Patna,Bihar,Mall Outlet,2022-09-24
+STR37,Store Kanpur 37,Kanpur,Uttar Pradesh,Mall Outlet,2019-06-26
+STR38,Store Jaipur 38,Jaipur,Rajasthan,Standalone,2019-07-21
+STR39,Store Delhi 39,Delhi,Delhi,Standalone,2020-05-23
+STR40,Store Ahmedabad 40,Ahmedabad,Gujarat,Standalone,2021-02-14

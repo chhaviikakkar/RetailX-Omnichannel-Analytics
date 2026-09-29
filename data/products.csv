@@ -1,0 +1,151 @@
+product_id,product_name,category,subcategory,brand,price,cost
+PROD001,L'Oreal Skincare 1,Beauty,Skincare,L'Oreal,2348.5,1082.3
+PROD002,Penguin Fiction 2,Books,Fiction,Penguin,204.24,129.03
+PROD003,Tata Staples 3,Grocery,Staples,Tata,237.54,167.42
+PROD004,Penguin Fiction 4,Books,Fiction,Penguin,991.01,721.79
+PROD005,Tata Snacks 5,Grocery,Snacks,Tata,637.37,447.05
+PROD006,Nestle Beverages 6,Grocery,Beverages,Nestle,205.55,100.2
+PROD007,Sony Cameras 7,Electronics,Cameras,Sony,60124.67,38419.88
+PROD008,H&M Men Clothing 8,Apparel,Men Clothing,H&M,1353.67,907.48
+PROD009,Penguin Fiction 9,Books,Fiction,Penguin,434.3,287.93
+PROD010,Puma Sportswear 10,Sports,Sportswear,Puma,9328.54,4350.37
+PROD011,boAt Mobile Phones 11,Electronics,Mobile Phones,boAt,5303.34,3793.18
+PROD012,boAt Headphones 12,Electronics,Headphones,boAt,15503.97,7403.4
+PROD013,Lakme Fragrance 13,Beauty,Fragrance,Lakme,3433.09,2017.17
+PROD014,Puma Sportswear 14,Sports,Sportswear,Puma,9691.56,6025.47
+PROD015,Levis Women Clothing 15,Apparel,Women Clothing,Levis,5703.13,3081.99
+PROD016,Nike Women Clothing 16,Apparel,Women Clothing,Nike,4348.77,2803.96
+PROD017,OnePlus Headphones 17,Electronics,Headphones,OnePlus,13578.24,8180.97
+PROD018,Nivea Makeup 18,Beauty,Makeup,Nivea,1738.47,844.49
+PROD019,Samsung Smart Watches 19,Electronics,Smart Watches,Samsung,23689.89,12825.98
+PROD020,Decathlon Sportswear 20,Sports,Sportswear,Decathlon,9320.42,5968.69
+PROD021,Nivea Fragrance 21,Beauty,Fragrance,Nivea,1519.42,782.94
+PROD022,MamaEarth Fragrance 22,Beauty,Fragrance,MamaEarth,1212.09,558.55
+PROD023,Decathlon Fitness Equipment 23,Sports,Fitness Equipment,Decathlon,7322.34,3790.61
+PROD024,MamaEarth Skincare 24,Beauty,Skincare,MamaEarth,2045.34,1351.15
+PROD025,HarperCollins Non-Fiction 25,Books,Non-Fiction,HarperCollins,835.05,454.99
+PROD026,Scholastic Fiction 26,Books,Fiction,Scholastic,726.6,421.01
+PROD027,ITC Beverages 27,Grocery,Beverages,ITC,343.77,207.58
+PROD028,Scholastic Academic 28,Books,Academic,Scholastic,1080.72,784.95
+PROD029,MamaEarth Fragrance 29,Beauty,Fragrance,MamaEarth,1892.92,1306.04
+PROD030,Nivea Skincare 30,Beauty,Skincare,Nivea,2955.23,1767.94
+PROD031,Levis Men Clothing 31,Apparel,Men Clothing,Levis,896.33,629.76
+PROD032,Nike Outdoor Gear 32,Sports,Outdoor Gear,Nike,4496.93,2474.39
+PROD033,Samsung Headphones 33,Electronics,Headphones,Samsung,26483.68,17818.43
+PROD034,Nestle Staples 34,Grocery,Staples,Nestle,749.64,529.97
+PROD035,HarperCollins Non-Fiction 35,Books,Non-Fiction,HarperCollins,311.29,196.19
+PROD036,Samsung Cameras 36,Electronics,Cameras,Samsung,30463.71,22467.86
+PROD037,Scholastic Fiction 37,Books,Fiction,Scholastic,960.71,521.94
+PROD038,boAt Cameras 38,Electronics,Cameras,boAt,57021.7,32294.38
+PROD039,HarperCollins Academic 39,Books,Academic,HarperCollins,161.26,82.68
+PROD040,Sony Cameras 40,Electronics,Cameras,Sony,14772.6,7382.93
+PROD041,L'Oreal Haircare 41,Beauty,Haircare,L'Oreal,3463.6,2136.32
+PROD042,Puma Fitness Equipment 42,Sports,Fitness Equipment,Puma,14858.7,7317.59
+PROD043,HarperCollins Non-Fiction 43,Books,Non-Fiction,HarperCollins,562.2,266.49
+PROD044,Milton Appliances 44,Home & Kitchen,Appliances,Milton,11014.34,6507.25
+PROD045,Nestle Staples 45,Grocery,Staples,Nestle,187.41,135.33
+PROD046,Penguin Academic 46,Books,Academic,Penguin,394.49,212.08
+PROD047,Nike Men Clothing 47,Apparel,Men Clothing,Nike,3725.45,2227.77
+PROD048,Nike Fitness Equipment 48,Sports,Fitness Equipment,Nike,3957.54,2782.45
+PROD049,HarperCollins Academic 49,Books,Academic,HarperCollins,831.61,541.43
+PROD050,Milton Appliances 50,Home & Kitchen,Appliances,Milton,1735.28,971.73
+PROD051,HarperCollins Academic 51,Books,Academic,HarperCollins,505.38,355.46
+PROD052,ITC Snacks 52,Grocery,Snacks,ITC,698.71,493.01
+PROD053,HarperCollins Non-Fiction 53,Books,Non-Fiction,HarperCollins,1105.03,691.9
+PROD054,Scholastic Fiction 54,Books,Fiction,Scholastic,507.62,304.39
+PROD055,Decathlon Outdoor Gear 55,Sports,Outdoor Gear,Decathlon,1932.7,1100.8
+PROD056,H&M Accessories 56,Apparel,Accessories,H&M,3969.58,1997.7
+PROD057,HarperCollins Fiction 57,Books,Fiction,HarperCollins,351.18,160.65
+PROD058,Milton Decor 58,Home & Kitchen,Decor,Milton,11370.72,6165.89
+PROD059,MamaEarth Skincare 59,Beauty,Skincare,MamaEarth,174.5,93.08
+PROD060,Philips Cookware 60,Home & Kitchen,Cookware,Philips,15954.11,11878.5
+PROD061,Philips Appliances 61,Home & Kitchen,Appliances,Philips,12094.4,8205.2
+PROD062,H&M Footwear 62,Apparel,Footwear,H&M,4463.83,3298.61
+PROD063,Tata Beverages 63,Grocery,Beverages,Tata,784.12,379.7
+PROD064,Adidas Footwear 64,Apparel,Footwear,Adidas,2920.49,1798.82
+PROD065,boAt Smart Watches 65,Electronics,Smart Watches,boAt,77645.58,57874.95
+PROD066,Nestle Snacks 66,Grocery,Snacks,Nestle,668.37,451.15
+PROD067,Nivea Makeup 67,Beauty,Makeup,Nivea,564.96,261.17
+PROD068,L'Oreal Makeup 68,Beauty,Makeup,L'Oreal,1790.49,1335.1
+PROD069,HarperCollins Academic 69,Books,Academic,HarperCollins,1176.81,674.87
+PROD070,Milton Cookware 70,Home & Kitchen,Cookware,Milton,2395.04,1476.87
+PROD071,OnePlus Headphones 71,Electronics,Headphones,OnePlus,74126.73,51649.65
+PROD072,Penguin Fiction 72,Books,Fiction,Penguin,541.34,251.51
+PROD073,Levis Women Clothing 73,Apparel,Women Clothing,Levis,4214.18,2798.12
+PROD074,L'Oreal Makeup 74,Beauty,Makeup,L'Oreal,3049.28,2048.6
+PROD075,Tata Beverages 75,Grocery,Beverages,Tata,72.6,37.78
+PROD076,ITC Snacks 76,Grocery,Snacks,ITC,776.57,350.5
+PROD077,Philips Appliances 77,Home & Kitchen,Appliances,Philips,17029.0,7814.3
+PROD078,HarperCollins Academic 78,Books,Academic,HarperCollins,1090.42,710.39
+PROD079,Nike Fitness Equipment 79,Sports,Fitness Equipment,Nike,12850.6,7124.49
+PROD080,L'Oreal Fragrance 80,Beauty,Fragrance,L'Oreal,1151.46,722.08
+PROD081,Apple Headphones 81,Electronics,Headphones,Apple,23436.35,16779.66
+PROD082,Prestige Appliances 82,Home & Kitchen,Appliances,Prestige,2394.85,1323.34
+PROD083,Puma Sportswear 83,Sports,Sportswear,Puma,12188.5,9136.78
+PROD084,Nestle Beverages 84,Grocery,Beverages,Nestle,384.91,189.01
+PROD085,Sony Mobile Phones 85,Electronics,Mobile Phones,Sony,79811.24,52696.51
+PROD086,HarperCollins Academic 86,Books,Academic,HarperCollins,561.99,407.21
+PROD087,HarperCollins Fiction 87,Books,Fiction,HarperCollins,291.09,162.9
+PROD088,Nestle Snacks 88,Grocery,Snacks,Nestle,205.72,93.66
+PROD089,IKEA Furniture 89,Home & Kitchen,Furniture,IKEA,15973.14,8832.95
+PROD090,Sony Headphones 90,Electronics,Headphones,Sony,76818.32,51897.61
+PROD091,Nike Footwear 91,Apparel,Footwear,Nike,2064.97,1484.92
+PROD092,Penguin Non-Fiction 92,Books,Non-Fiction,Penguin,491.61,355.3
+PROD093,ITC Snacks 93,Grocery,Snacks,ITC,675.82,423.89
+PROD094,Decathlon Sportswear 94,Sports,Sportswear,Decathlon,4771.0,2492.43
+PROD095,Apple Laptops 95,Electronics,Laptops,Apple,14124.44,10060.76
+PROD096,Apple Mobile Phones 96,Electronics,Mobile Phones,Apple,45796.17,31489.1
+PROD097,L'Oreal Makeup 97,Beauty,Makeup,L'Oreal,1618.59,959.63
+PROD098,Puma Outdoor Gear 98,Sports,Outdoor Gear,Puma,10249.12,7116.9
+PROD099,OnePlus Cameras 99,Electronics,Cameras,OnePlus,63432.01,32068.29
+PROD100,Decathlon Fitness Equipment 100,Sports,Fitness Equipment,Decathlon,1887.65,1219.19
+PROD101,L'Oreal Haircare 101,Beauty,Haircare,L'Oreal,1867.65,1083.03
+PROD102,Samsung Mobile Phones 102,Electronics,Mobile Phones,Samsung,76862.41,36963.19
+PROD103,Samsung Laptops 103,Electronics,Laptops,Samsung,21193.2,9953.58
+PROD104,Nivea Fragrance 104,Beauty,Fragrance,Nivea,1878.89,1021.69
+PROD105,Penguin Fiction 105,Books,Fiction,Penguin,267.18,151.05
+PROD106,Penguin Academic 106,Books,Academic,Penguin,883.1,452.24
+PROD107,Nivea Fragrance 107,Beauty,Fragrance,Nivea,1470.32,845.41
+PROD108,Prestige Cookware 108,Home & Kitchen,Cookware,Prestige,3068.14,2174.79
+PROD109,Nestle Snacks 109,Grocery,Snacks,Nestle,472.11,281.78
+PROD110,Nivea Skincare 110,Beauty,Skincare,Nivea,1594.95,1091.22
+PROD111,Milton Furniture 111,Home & Kitchen,Furniture,Milton,6730.61,3679.94
+PROD112,Lakme Makeup 112,Beauty,Makeup,Lakme,1757.54,1151.15
+PROD113,Apple Laptops 113,Electronics,Laptops,Apple,27797.39,20267.5
+PROD114,Prestige Furniture 114,Home & Kitchen,Furniture,Prestige,11681.01,7749.97
+PROD115,Lakme Skincare 115,Beauty,Skincare,Lakme,308.7,151.71
+PROD116,Tata Snacks 116,Grocery,Snacks,Tata,38.06,19.28
+PROD117,Penguin Academic 117,Books,Academic,Penguin,266.16,169.29
+PROD118,Penguin Non-Fiction 118,Books,Non-Fiction,Penguin,747.67,468.83
+PROD119,L'Oreal Makeup 119,Beauty,Makeup,L'Oreal,165.88,117.11
+PROD120,boAt Headphones 120,Electronics,Headphones,boAt,14693.99,10019.56
+PROD121,Milton Appliances 121,Home & Kitchen,Appliances,Milton,6580.31,4774.92
+PROD122,ITC Beverages 122,Grocery,Beverages,ITC,554.98,413.68
+PROD123,Apple Mobile Phones 123,Electronics,Mobile Phones,Apple,65426.43,35691.41
+PROD124,Tata Beverages 124,Grocery,Beverages,Tata,552.64,284.56
+PROD125,Decathlon Sportswear 125,Sports,Sportswear,Decathlon,5037.48,2384.91
+PROD126,Levis Accessories 126,Apparel,Accessories,Levis,2405.63,1096.27
+PROD127,Penguin Academic 127,Books,Academic,Penguin,911.44,603.76
+PROD128,Scholastic Fiction 128,Books,Fiction,Scholastic,483.01,346.32
+PROD129,Sony Mobile Phones 129,Electronics,Mobile Phones,Sony,11830.05,5833.58
+PROD130,boAt Cameras 130,Electronics,Cameras,boAt,15489.63,9327.67
+PROD131,Puma Fitness Equipment 131,Sports,Fitness Equipment,Puma,458.51,208.61
+PROD132,Tata Beverages 132,Grocery,Beverages,Tata,538.64,262.9
+PROD133,OnePlus Headphones 133,Electronics,Headphones,OnePlus,70669.66,43169.28
+PROD134,Decathlon Fitness Equipment 134,Sports,Fitness Equipment,Decathlon,4388.53,2041.35
+PROD135,Sony Headphones 135,Electronics,Headphones,Sony,24990.91,16221.26
+PROD136,Puma Outdoor Gear 136,Sports,Outdoor Gear,Puma,665.14,418.18
+PROD137,Nike Fitness Equipment 137,Sports,Fitness Equipment,Nike,13158.77,6922.82
+PROD138,boAt Cameras 138,Electronics,Cameras,boAt,45176.19,25698.47
+PROD139,Puma Outdoor Gear 139,Sports,Outdoor Gear,Puma,10996.24,6818.56
+PROD140,Tata Snacks 140,Grocery,Snacks,Tata,885.57,509.9
+PROD141,ITC Staples 141,Grocery,Staples,ITC,40.85,28.14
+PROD142,Sony Laptops 142,Electronics,Laptops,Sony,33820.99,16173.93
+PROD143,H&M Accessories 143,Apparel,Accessories,H&M,2672.54,1749.91
+PROD144,Levis Women Clothing 144,Apparel,Women Clothing,Levis,5788.52,2914.71
+PROD145,Lakme Makeup 145,Beauty,Makeup,Lakme,3027.59,2191.29
+PROD146,Zara Men Clothing 146,Apparel,Men Clothing,Zara,3083.9,2066.36
+PROD147,Scholastic Non-Fiction 147,Books,Non-Fiction,Scholastic,548.01,331.6
+PROD148,Scholastic Fiction 148,Books,Fiction,Scholastic,917.69,628.51
+PROD149,HarperCollins Academic 149,Books,Academic,HarperCollins,259.85,187.4
+PROD150,H&M Footwear 150,Apparel,Footwear,H&M,4889.54,2346.78
