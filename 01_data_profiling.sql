@@ -77,9 +77,9 @@ COUNT(*) AS number_of_stores
 FROM source.stores;
 
 /*FINDING: customers.acquisition_date starts 2022-12-29, three days before
-the dataset's official window (2023-01-01). See the isolated check below.
+the dataset's official window (2023-01-01). See the isolated check below.*/
 
-FINDING: returns.last_return (2025-01-19) falls after orders.last_order
+/*FINDING: returns.last_return (2025-01-19) falls after orders.last_order
 (2024-12-30). This is expected right-censoring: late-December orders can
 still be returned after the dataset's snapshot date. Return-rate KPIs
 for the final ~3 weeks of the dataset will understate true returns and
@@ -90,34 +90,28 @@ should be flagged or excluded in Level 2 analysis.*/
   Sanity check: touchpoint timestamps should fall within their own
   campaign's active window.
 ---------------------------------------------------------------------*/
-SELECT COUNT(*) AS touchpoints_outside_campaign_window
+SELECT 
+COUNT(*) AS touchpoints_outside_campaign_window
 FROM source.marketing_touchpoints tp
 JOIN source.campaigns c ON tp.campaign_id = c.campaign_id
 WHERE tp.timestamp < c.start_date OR tp.timestamp > c.end_date;
--- RESULT: 0. All 520,000 touchpoints validated against their campaign's
--- start/end dates.
+-- RESULT: 0. 
+-- All 520,000 touchpoints validated against their campaign's start/end dates.
 
 
 /*---------------------------------------------------------------------
   Isolate the 47 customers acquired before the dataset's official window
 ---------------------------------------------------------------------*/
-SELECT COUNT(*) AS affected_customers
+SELECT 
+COUNT(*) AS affected_customers
 FROM source.customers
 WHERE acquisition_date < '2023-01-01';
--- RESULT: 47 of 30,000 (0.16%). Decision: retain and flag rather than
--- delete — deleting would cascade into orders/sessions/touchpoints for a
--- negligible-impact edge case. If a specific analysis needs a clean
--- "2023-2024 acquisition cohort," filter with
--- WHERE acquisition_date >= '2023-01-01' at the query level, not the
--- source table.
-
+-- RESULT: 47 of 30,000 (0.16%). 
+-- Decision: Retain and flag rather than delete
 
 /*---------------------------------------------------------------------
   Q2. Referential integrity (orphan checks)
-  Goal: confirm every foreign-key-style relationship has zero orphans.
-  Verified two ways: count comparison (INNER JOIN vs total) for a quick
-  pass/fail, and NOT EXISTS / LEFT JOIN for surfacing actual orphan rows
-  when a count mismatch is found.
+  Goal: To confirm every foreign-key-style relationship has zero orphans.
 ---------------------------------------------------------------------*/
 
 -- orders -> customers
