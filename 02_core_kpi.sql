@@ -33,12 +33,13 @@ FROM source.orders
 WHERE order_status <> 'Cancelled'
 GROUP BY sales_channel;
 
-/*FINDING:Online generates ~68% of revenue (₹168.66 Cr / ₹1.69B) 
-across 66,191 orders; In-Store generates ~32% (₹80.69 Cr / ₹807M)
-across 31,456 orders roughly 2.1x the order volume for Online, but
-In-Store has a marginally higher AOV. Excluding Cancelled orders (7%
-of total) shifted AOV by <0.1%, i.e. cancellations aren't concentrated
-at either end of the order-value spectrum.*/
+/*FINDING: Online generates ~68% of revenue (₹168.66 Cr / ₹1.69B) across
+66,191 orders; In-Store generates ~32% (₹80.69 Cr / ₹807M) across 
+31,456 orders — roughly 2.1x the order volume for Online, but In-Store 
+has a marginally higher AOV. Excluding Cancelled orders (7% of total) 
+shifted Online's AOV by just 0.07%, and In-Store's by 0.26% — small in 
+both cases, but Online's AOV is essentially unaffected by the cancellation
+filter while In-Store's shows a somewhat larger (still modest) movement.*/
 
 
 /*---------------------------------------------------------------------
