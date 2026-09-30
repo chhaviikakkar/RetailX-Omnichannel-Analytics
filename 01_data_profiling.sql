@@ -110,7 +110,7 @@ WHERE acquisition_date < '2023-01-01';
 -- Decision: Retain and flag rather than delete
 
 /*---------------------------------------------------------------------
-  Q2. Referential integrity (orphan checks)
+  2. Referential integrity (orphan checks)
   Goal: To confirm every foreign-key-style relationship has zero orphans.
 ---------------------------------------------------------------------*/
 
@@ -136,7 +136,7 @@ SELECT COUNT(*) FROM source.marketing_touchpoints tp JOIN source.campaigns c ON 
 -- RESULT: all five relationships show matching counts -> zero orphans.
 
 /*---------------------------------------------------------------------
-  Q3. NULL pattern checks — customers, orders, sessions
+  3. NULL pattern checks — customers, orders, sessions
   Goal: find every NULL, then explain WHY using another column, then
   verify the explanation holds for 100% of rows (not just "most").
 ---------------------------------------------------------------------*/
@@ -187,7 +187,7 @@ GROUP BY source;
 
 
 /*---------------------------------------------------------------------
-  Q4. Categorical consistency checks
+  4. Categorical consistency checks
   Goal: catch casing, whitespace, or near-duplicate category values
   before they silently split a GROUP BY into two "different" buckets.
 ---------------------------------------------------------------------*/
@@ -217,7 +217,7 @@ WHERE LEN(device) <> LEN(TRIM(device));
 
 
 /*---------------------------------------------------------------------
-  Q5. Logical impossibilities
+  5. Logical impossibilities
   Goal: To find values that shouldn't exist regardless of business
   context — these are bugs to flag, not patterns to explain away.
 ---------------------------------------------------------------------*/
@@ -261,7 +261,7 @@ post-discount. Material limitation — flag in any refund-based KPI.*/
 
 
 /*---------------------------------------------------------------------
-  Q6. net_amount reconciliation
+  6. net_amount reconciliation
   Goal: confirm net_amount = gross_amount - discount_amount + shipping_amount
 ---------------------------------------------------------------------*/
 SELECT COUNT(*) AS mismatched_orders
