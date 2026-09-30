@@ -135,15 +135,6 @@ SELECT COUNT(*) FROM source.marketing_touchpoints tp JOIN source.campaigns c ON 
 
 -- RESULT: all five relationships show matching counts -> zero orphans.
 
--- Reusable pattern for surfacing actual orphan rows (not just a count),
--- e.g. finding customers who never placed an order:
-SELECT c.customer_id
-FROM source.customers c
-WHERE NOT EXISTS (
-    SELECT 1 FROM source.orders o WHERE o.customer_id = c.customer_id
-);
-
-
 /*---------------------------------------------------------------------
   Q3. NULL pattern checks — customers, orders, sessions
   Goal: find every NULL, then explain WHY using another column, then
@@ -161,7 +152,7 @@ SELECT
     SUM(CASE WHEN acquisition_date IS NULL THEN 1 ELSE 0 END) AS null_acq_date,
     SUM(CASE WHEN acquisition_channel IS NULL THEN 1 ELSE 0 END) AS null_acq_channel
 FROM source.customers;
--- (repeat the same style for source.orders and source.sessions)
+-- (repeat the same for source.orders and source.sessions)
 
 -- customers.acquisition_campaign_id: NULL for Organic/Direct customers?
 SELECT acquisition_channel,
@@ -171,8 +162,8 @@ SELECT acquisition_channel,
 FROM source.customers
 GROUP BY acquisition_channel
 ORDER BY acquisition_channel;
--- RESULT: 100% NULL for Organic/Direct, 100% populated for every paid
--- channel. Expected business logic, not missing data.
+-- RESULT: 100% NULL for Organic/Direct, 100% populated for every paid channel.
+-- Expected business logic, not missing data.
 
 -- orders.store_id: NULL for Online orders?
 SELECT sales_channel,
@@ -191,8 +182,8 @@ SELECT source,
        COUNT(*) - COUNT(campaign_id) AS null_campaign_id
 FROM source.sessions
 GROUP BY source;
--- RESULT: 100% NULL for Direct and Organic Search, 100% populated for
--- every paid source. Expected business logic, not missing data.
+-- RESULT: 100% NULL for Direct and Organic Search, 100% populated for every paid source
+-- Expected business logic, not missing data.
 
 
 /*---------------------------------------------------------------------
@@ -227,7 +218,7 @@ WHERE LEN(device) <> LEN(TRIM(device));
 
 /*---------------------------------------------------------------------
   Q5. Logical impossibilities
-  Goal: find values that shouldn't exist regardless of business
+  Goal: To find values that shouldn't exist regardless of business
   context — these are bugs to flag, not patterns to explain away.
 ---------------------------------------------------------------------*/
 
@@ -261,11 +252,12 @@ FROM source.returns r
 JOIN source.order_items oi
     ON r.order_id = oi.order_id AND r.product_id = oi.product_id
 WHERE r.refund_amount > (oi.unit_price * oi.quantity - oi.discount_amount);
--- RESULT: 6,889 of 19,971 returns (34.5%) exceed their own item's line
--- value. A looser order-level check (refund_amount > orders.net_amount)
--- returns 1,428 (7.2%). Root cause: refund_amount was calculated from
--- pre-discount unit_price x return_quantity, while item/order values are
--- post-discount. Material limitation — flag in any refund-based KPI.
+
+/*RESULT: 6,889 of 19,971 returns (34.5%) exceed their own item's line
+value. A looser order-level check (refund_amount > orders.net_amount)
+returns 1,428 (7.2%). Root cause: refund_amount was calculated from
+pre-discount unit_price x return_quantity, while item/order values are
+post-discount. Material limitation — flag in any refund-based KPI.*/
 
 
 /*---------------------------------------------------------------------
@@ -275,9 +267,10 @@ WHERE r.refund_amount > (oi.unit_price * oi.quantity - oi.discount_amount);
 SELECT COUNT(*) AS mismatched_orders
 FROM source.orders
 WHERE ROUND(gross_amount - discount_amount + shipping_amount, 2) <> net_amount;
--- RESULT: 1,611 of 105,000 orders (1.53%) do not reconcile. gross_amount
--- and discount_amount are unaffected; only net_amount carries this gap.
--- Flag in any revenue analysis built on net_amount.
+
+/*RESULT: 1,611 of 105,000 orders (1.53%) do not reconcile. gross_amount
+and discount_amount are unaffected; only net_amount carries this gap.
+Flag in any revenue analysis built on net_amount.*/
 
 /*=====================================================================
 END OF LEVEL 1
