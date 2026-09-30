@@ -18,14 +18,11 @@ Business rules established and used throughout this script:
     data_quality_log.md, finding #5) — refund KPIs here use return
     COUNT, which is unaffected, rather than treating refund_amount as
     fully reconciled.
-
-Author  : [Your Name]
-Dataset : RetailX synthetic omnichannel retail dataset
 =======================================================================*/
 
 
 /*---------------------------------------------------------------------
-  Q7. Revenue, order count, and AOV by sales_channel
+  7. Revenue, order count, and AOV by sales_channel
 ---------------------------------------------------------------------*/
 SELECT
     sales_channel,
@@ -36,16 +33,16 @@ FROM source.orders
 WHERE order_status <> 'Cancelled'
 GROUP BY sales_channel;
 
--- FINDING: Online generates ~68% of revenue (Rs.168.7M... scale depends
--- on currency formatting) across 66,191 orders; In-Store generates ~32%
--- across 31,456 orders — roughly 2.1x the order volume for Online, but
--- In-Store has a marginally higher AOV. Excluding Cancelled orders (7%
--- of total) shifted AOV by <0.1%, i.e. cancellations aren't concentrated
--- at either end of the order-value spectrum.
+/*FINDING:Online generates ~68% of revenue (₹168.66 Cr / ₹1.69B) 
+across 66,191 orders; In-Store generates ~32% (₹80.69 Cr / ₹807M)
+across 31,456 orders roughly 2.1x the order volume for Online, but
+In-Store has a marginally higher AOV. Excluding Cancelled orders (7%
+of total) shifted AOV by <0.1%, i.e. cancellations aren't concentrated
+at either end of the order-value spectrum.*/
 
 
 /*---------------------------------------------------------------------
-  Q9. CTR and CPC by marketing channel
+  8. CTR and CPC by marketing channel
 ---------------------------------------------------------------------*/
 SELECT
     c.channel,
@@ -72,7 +69,7 @@ ORDER BY cost_per_click ASC;
 
 
 /*---------------------------------------------------------------------
-  Q10. Campaign spend vs. budget — who overspent, and by how much
+  9. Campaign spend vs. budget — who overspent, and by how much
 ---------------------------------------------------------------------*/
 SELECT
     m.campaign_id,
@@ -119,7 +116,7 @@ ORDER BY pct_overspent DESC;
 
 
 /*---------------------------------------------------------------------
-  Q11. Revenue, profit, and margin by product category and brand
+  10. Revenue, profit, and margin by product category and brand
 ---------------------------------------------------------------------*/
 -- Uses order_items.unit_price (actual transaction price), not
 -- products.price (catalog/reference price) — price and unit_price
@@ -183,7 +180,7 @@ ORDER BY total_revenue DESC;
 
 
 /*---------------------------------------------------------------------
-  Q12. Return rate and refund value by reason and by category
+  11. Return rate and refund value by reason and by category
 ---------------------------------------------------------------------*/
 
 -- Part A: by return reason (needs only the returns table — reason and
