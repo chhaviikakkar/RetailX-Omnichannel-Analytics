@@ -151,8 +151,7 @@ margins in the dataset.*/
   11. Return rate and refund value by reason and by category
 ---------------------------------------------------------------------*/
 
--- Part A: by return reason (needs only the returns table — reason and
--- refund_amount both live there directly, no join required)
+-- Part A: by return reason 
 SELECT
     return_reason,
     COUNT(*) AS total_returns,
@@ -165,11 +164,7 @@ ORDER BY total_refund DESC;
 -- each) — no single cause dominates, so no one operational fix would
 -- meaningfully cut overall return volume on its own.
 
--- Part B: by category, WITH a true rate (returns / items sold), not
--- just a raw count. order_items is the anchor table so every sale is
--- counted, whether returned or not; returns is LEFT JOINed on BOTH
--- order_id and product_id so it only adds information, never filters
--- the base set of sales.
+-- Part B: by category
 SELECT
     p.category,
     SUM(oi.quantity) AS total_sold,
@@ -183,27 +178,13 @@ LEFT JOIN source.returns r
 GROUP BY p.category
 ORDER BY total_refunds DESC;
 
--- NOTE: this query went through three broken versions before landing
--- here, all variations of the same root cause — joining returns and
--- order_items without matching BOTH order_id and product_id together.
--- Symptoms at each stage: (1) joining products->returns->order_items
--- on product_id alone caused one return to fan out across every order
--- that ever contained that product (return count off by ~1,400x);
--- (2) fixing the returns/order_items join but keeping order_items
--- joined only to matched returns turned an INNER JOIN into a filter,
--- shrinking total_sold and inflating the rate to a nonsensical ~72%
--- for every category. The working pattern: anchor on the full
--- order_items table, JOIN dimension tables normally, LEFT JOIN
--- transactional/event tables (like returns) on the FULL composite key
--- that actually identifies one event (order_id + product_id).
---
--- FINDING: return rates are consistent across every category
--- (6.57%-7.03%) — no category is disproportionately likely to be
--- returned. But refund VALUE is heavily concentrated in Electronics
--- (~74% of total refunds) purely because of its high price point.
--- Return-reduction efforts should prioritize Electronics not because
--- it's returned more often, but because each return there is far more
--- expensive.
+/* FINDING: return rates are consistent across every category
+(6.57%-7.03%) — no category is disproportionately likely to be
+returned. But refund VALUE is heavily concentrated in Electronics
+(~74% of total refunds) purely because of its high price point.
+Return-reduction efforts should prioritize Electronics not because
+it's returned more often, but because each return there is far more
+expensive.*/
 
 /*=====================================================================
 END OF LEVEL 2
