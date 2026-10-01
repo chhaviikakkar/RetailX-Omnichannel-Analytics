@@ -78,46 +78,23 @@ JOIN source.campaigns c ON c.campaign_id = m.campaign_id
 GROUP BY m.campaign_id, c.channel, c.budget
 ORDER BY overspend_amount DESC;
 
--- NOTE: an earlier draft used SUM(spend) OVER (ORDER BY campaign_id)
--- with no PARTITION BY — that computes a running total across ALL
--- campaigns in ID order, not each campaign's own total. Always pair a
--- window function's ORDER BY with an explicit PARTITION BY when you
--- want the calculation to reset per group; a plain GROUP BY was the
--- right tool here, not a window function at all.
-
--- Same view, rolled up by channel, to check whether overspending
--- clusters in a particular channel:
-SELECT
-    c.channel,
-    COUNT(*) AS total_campaigns,
-    SUM(CASE WHEN spend_summary.total_spend > c.budget THEN 1 ELSE 0 END) AS campaigns_overspent,
-    ROUND(SUM(CASE WHEN spend_summary.total_spend > c.budget THEN 1 ELSE 0 END) * 100.0 / COUNT(*), 1) AS pct_overspent,
-    SUM(spend_summary.total_spend - c.budget) AS net_overspend
-FROM source.campaigns c
-JOIN (
-    SELECT campaign_id, SUM(spend) AS total_spend
-    FROM source.marketing_spend
-    GROUP BY campaign_id
-) spend_summary ON spend_summary.campaign_id = c.campaign_id
-GROUP BY c.channel
-ORDER BY pct_overspent DESC;
-
--- FINDING: 14 of 100 campaigns overspent their budget. SMS and Display
--- are tied for the highest overspend rate (19% of campaigns each) —
--- SMS is not uniquely worse on this metric alone, but combined with its
--- weak CTR/CPC performance (Q9), it's the stronger case for review.
--- Influencer has a 0% overspend rate, reinforcing it as the standout
--- channel for efficiency.
+/*FINDING: 14 of 100 campaigns overspent their budget. SMS and Display
+are tied for the highest overspend rate (19% of campaigns each) —
+SMS is not uniquely worse on this metric alone, but combined with its
+weak CTR/CPC performance (Q9), it's the stronger case for review.
+Influencer has a 0% overspend rate, reinforcing it as the standout
+channel for efficiency.*/
 
 
 /*---------------------------------------------------------------------
   10. Revenue, profit, and margin by product category and brand
+-----------------------------------------------------------------------
+Note: Used order_items.unit_price (actual transaction price), not
+products.price (catalog/reference price) — price and unit_price
+intentionally differ in this dataset to simulate promotions/price
+drift over time. Revenue and profit must reflect what was actually
+charged, not the catalog price.
 ---------------------------------------------------------------------*/
--- Uses order_items.unit_price (actual transaction price), not
--- products.price (catalog/reference price) — price and unit_price
--- intentionally differ in this dataset to simulate promotions/price
--- drift over time. Revenue and profit must reflect what was actually
--- charged, not the catalog price.
 
 WITH item_level AS (
     SELECT
@@ -138,8 +115,7 @@ FROM item_level
 GROUP BY category
 ORDER BY total_revenue DESC;
 
--- by brand (separate GROUP BY — combining category+brand in one query
--- would cross every category-brand pair instead of two clean breakdowns)
+-- by brand 
 WITH item_level AS (
     SELECT
         p.brand,
