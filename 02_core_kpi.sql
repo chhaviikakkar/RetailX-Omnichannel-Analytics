@@ -57,16 +57,10 @@ JOIN source.campaigns c ON c.campaign_id = m.campaign_id
 GROUP BY c.channel
 ORDER BY cost_per_click ASC;
 
--- NOTE: cost_per_click must be spend / clicks. An earlier draft computed
--- clicks / spend by mistake, which inverted the entire ranking — a
--- channel that looked "cheap" was actually the most expensive. Always
--- sanity-check a rate/ratio column against plain-language intuition
--- before trusting it.
---
--- FINDING: Influencer marketing has the best combination of engagement
--- and cost-efficiency (3.40% CTR, Rs.9.99 CPC). SMS underperforms on
--- both dimensions (2.40% CTR, Rs.15.94 CPC) despite the second-highest
--- spend allocation — a strong candidate for budget reallocation.
+/*FINDING: Influencer marketing has the best combination of engagement
+and cost-efficiency (3.40% CTR, Rs.9.99 CPC). SMS underperforms on
+both dimensions (2.40% CTR, Rs.15.94 CPC) despite the second-highest
+spend allocation — a strong candidate for budget reallocation.*/
 
 
 /*---------------------------------------------------------------------
