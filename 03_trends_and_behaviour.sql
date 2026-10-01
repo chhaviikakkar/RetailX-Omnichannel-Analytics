@@ -12,13 +12,11 @@ the whole result set. Getting this wrong (or leaving it out) was the
 root cause of nearly every bug encountered while building these queries
 — see the NOTE under each query for specifics.
 
-Author  : [Your Name]
-Dataset : RetailX synthetic omnichannel retail dataset
 =======================================================================*/
 
 
 /*---------------------------------------------------------------------
-  Q13. Top 3 products by revenue within each category
+  12. Top 3 products by revenue within each category
 ---------------------------------------------------------------------*/
 SELECT product_id, category, revenue, ranking
 FROM (
@@ -58,7 +56,7 @@ ORDER BY category, ranking;
 
 
 /*---------------------------------------------------------------------
-  Q14. Month-over-month revenue growth %
+  13. Month-over-month revenue growth %
 ---------------------------------------------------------------------*/
 SELECT
     years,
@@ -101,7 +99,7 @@ ORDER BY years, months;
 
 
 /*---------------------------------------------------------------------
-  Q15. Running total of revenue by month, within each sales channel
+  14. Running total of revenue by month, within each sales channel
 ---------------------------------------------------------------------*/
 SELECT
     sales_channel,
@@ -137,7 +135,7 @@ ORDER BY sales_channel, year, month;
 
 
 /*---------------------------------------------------------------------
-  Q16. Funnel: sessions -> touchpoints -> orders, by device
+  15. Funnel: sessions -> touchpoints -> orders, by device
 ---------------------------------------------------------------------*/
 -- Device is established ONCE, from sessions.device, and used as the
 -- anchor for all three stages. marketing_touchpoints.device and orders
@@ -170,7 +168,7 @@ GROUP BY s.device;
 
 
 /*---------------------------------------------------------------------
-  Q17. Days between consecutive orders per customer
+  16. Days between consecutive orders per customer
 ---------------------------------------------------------------------*/
 SELECT AVG(difference_in_days) AS avg_repeat_purchase_gap_days
 FROM (
