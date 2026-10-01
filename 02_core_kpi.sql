@@ -132,21 +132,21 @@ FROM cte_brand
 GROUP BY brand
 ORDER BY total_revenue DESC;
 
--- FINDING: Electronics dominates absolute revenue and profit (~68% of
--- total revenue) almost entirely due to a much higher average selling
--- price (Rs.39,056 vs. the next-highest category at Rs.8,915) rather
--- than higher sales volume — Books actually sells more units. However,
--- Electronics has the second-lowest profit MARGIN (32.51%) of any
--- category; Sports is the most efficient (36.84%). Best-selling,
--- highest-revenue, and highest-margin are three different questions —
--- category strategy should treat them separately.
---
--- At brand level, Electronics brands (Sony, boAt, OnePlus, Apple)
--- dominate revenue but mostly sit in the bottom half by margin; Samsung
--- is the exception. Apple combines high revenue with one of the lowest
--- margins in the dataset. NOTE: brand-level cost/price ratios were
--- randomly generated per brand in this synthetic dataset and should not
--- be read as real-world brand economics.
+/*FINDING: Electronics dominates absolute revenue and profit (~68% of
+total revenue) almost entirely due to a much higher average selling
+price (Rs.39,056 vs. the next-highest category at Rs.8,915) rather
+than higher sales volume — Books actually sells more units. However,
+Electronics has the second-lowest profit MARGIN (32.51%) of any
+category; Sports is the most efficient (36.84%). Best-selling,
+highest-revenue, and highest-margin are three different questions —
+category strategy should treat them separately.
+
+At brand level, Electronics brands (Sony, boAt, OnePlus, Apple)
+dominate revenue but mostly sit in the bottom half by margin; Samsung
+is the exception. Apple combines high revenue with one of the lowest
+margins in the dataset. NOTE: brand-level cost/price ratios were
+randomly generated per brand in this synthetic dataset and should not
+be read as real-world brand economics.*/
 
 
 /*---------------------------------------------------------------------
