@@ -50,9 +50,6 @@ ID formats:
   return_id     RET000001
 =====================================================================*/
 
-CREATE SCHEMA source;
-GO
-
 CREATE TABLE source.campaigns (
     campaign_id   VARCHAR(50) PRIMARY KEY,
     campaign_name VARCHAR(50),
