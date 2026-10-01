@@ -96,10 +96,9 @@ drift over time. Revenue and profit must reflect what was actually
 charged, not the catalog price.
 ---------------------------------------------------------------------*/
 
-WITH item_level AS (
+WITH cte_category AS (
     SELECT
         p.category,
-        p.brand,
         (o.unit_price * o.quantity) - o.discount_amount AS revenue,
         (o.unit_price * o.quantity) - o.discount_amount - (p.cost * o.quantity) AS profit
     FROM source.products p
@@ -116,7 +115,7 @@ GROUP BY category
 ORDER BY total_revenue DESC;
 
 -- by brand 
-WITH item_level AS (
+WITH cte_brand AS (
     SELECT
         p.brand,
         (o.unit_price * o.quantity) - o.discount_amount AS revenue,
