@@ -110,7 +110,7 @@ SELECT
     SUM(revenue) AS total_revenue,
     SUM(profit) AS total_profit,
     ROUND(SUM(profit) * 100.0 / SUM(revenue), 2) AS profit_margin_pct
-FROM item_level
+FROM cte_category
 GROUP BY category
 ORDER BY total_revenue DESC;
 
@@ -128,7 +128,7 @@ SELECT
     SUM(revenue) AS total_revenue,
     SUM(profit) AS total_profit,
     ROUND(SUM(profit) * 100.0 / SUM(revenue), 2) AS profit_margin_pct
-FROM item_level
+FROM cte_brand
 GROUP BY brand
 ORDER BY total_revenue DESC;
 
