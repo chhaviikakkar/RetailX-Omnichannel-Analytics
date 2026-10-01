@@ -144,9 +144,7 @@ category strategy should treat them separately.
 At brand level, Electronics brands (Sony, boAt, OnePlus, Apple)
 dominate revenue but mostly sit in the bottom half by margin; Samsung
 is the exception. Apple combines high revenue with one of the lowest
-margins in the dataset. NOTE: brand-level cost/price ratios were
-randomly generated per brand in this synthetic dataset and should not
-be read as real-world brand economics.*/
+margins in the dataset.*/
 
 
 /*---------------------------------------------------------------------
