@@ -45,7 +45,7 @@ JOIN monetory m ON m.customer_id = r.customer_id)
 SELECT *,
 r_score + f_score + m_score AS total_score,
 CASE
-WHEN  r_score + f_score + m_score >= 12 THEN 'Supreme Customers'
+WHEN  r_score + f_score + m_score >= 12 THEN 'Champions'
 WHEN  r_score + f_score + m_score >= 9 THEN 'Loyal Customers'
 WHEN  r_score + f_score + m_score >= 6 THEN 'At risk'
 ELSE 'Lost'
