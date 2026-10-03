@@ -95,16 +95,10 @@ FROM (
 ) t
 ORDER BY sales_channel, year, month;
 
--- NOTE: PARTITION BY sales_channel is required so the running total
--- resets cleanly for each channel instead of accumulating across both
--- combined (the same mistake as Q10's overspend bug, avoided here by
--- partitioning correctly from the start). No PARTITION BY on year,
--- unlike Q14's fix — a running total should keep accumulating straight
--- through the 2023->2024 boundary, not reset at year-end.
---
--- Verified: running total resets to a small number at the first month
--- of each channel and carries continuously across the year boundary
--- within a channel.
+
+/*FINDING: Running total resets to a small number at the first month
+of each channel and carries continuously across the year boundary
+within a channel.*/
 
 
 /*---------------------------------------------------------------------
