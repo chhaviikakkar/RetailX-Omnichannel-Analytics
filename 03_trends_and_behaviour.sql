@@ -5,13 +5,6 @@ Level 3: Trends & Behaviour
 Purpose : Apply ranking, running totals, gap analysis, and multi-table
           funnel logic — building on the validated data and business
           rules established in Levels 1 and 2.
-
-Key lesson carried through this whole file: PARTITION BY controls
-whether a window function resets per group or runs continuously across
-the whole result set. Getting this wrong (or leaving it out) was the
-root cause of nearly every bug encountered while building these queries
-— see the NOTE under each query for specifics.
-
 =======================================================================*/
 
 
