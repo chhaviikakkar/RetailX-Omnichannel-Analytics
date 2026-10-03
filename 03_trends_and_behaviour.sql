@@ -16,36 +16,22 @@ FROM (
     SELECT
         p.product_id,
         p.category,
-        SUM(oi.unit_price * oi.quantity - oi.discount_amount) AS revenue,
+        SUM(o.unit_price * o.quantity - o.discount_amount) AS revenue,
         DENSE_RANK() OVER (PARTITION BY p.category ORDER BY
-            SUM(oi.unit_price * oi.quantity - oi.discount_amount) DESC) AS ranking
+            SUM(o.unit_price * o.quantity - o.discount_amount) DESC) AS ranking
     FROM source.products p
-    JOIN source.order_items oi ON oi.product_id = p.product_id
+    JOIN source.order_items o ON o.product_id = p.product_id
     GROUP BY p.product_id, p.category
 ) ranked
 WHERE ranking <= 3
 ORDER BY category, ranking;
 
--- NOTE: grouped by product_id (the actual key), not product_name — a
--- text label could theoretically collide across different products,
--- even though it doesn't in this dataset. DENSE_RANK() was chosen over
--- ROW_NUMBER() as a deliberate choice: if two products in a category
--- were exactly tied for 3rd place, DENSE_RANK() would return both
--- (4 rows for that category) rather than arbitrarily picking one.
--- Verified no ties exist in this dataset, so both would give an
--- identical result here — but DENSE_RANK() is the more defensible
--- default when tie-handling matters.
---
--- A window function's result (ranking) can't be filtered directly in
--- a WHERE clause in the same query — hence wrapping it in a subquery
--- and filtering in the outer SELECT.
---
--- FINDING: revenue gap between category leaders is enormous — Sony
--- Mobile Phones (Electronics, #1) generates ~68x the revenue of Tata
--- Snacks (Grocery, #1). Some categories show heavy brand concentration
--- at the top (Books' top 3 are all HarperCollins; Sports' top 3 include
--- 2 Nike products) — a supply issue with one brand could meaningfully
--- dent that category's revenue.
+/*FINDING: revenue gap between category leaders is enormous — Sony
+Mobile Phones (Electronics, #1) generates ~68x the revenue of Tata
+Snacks (Grocery, #1). Some categories show heavy brand concentration
+at the top (Books' top 3 are all HarperCollins; Sports' top 3 include
+2 Nike products) — a supply issue with one brand could meaningfully
+dent that category's revenue.*/
 
 
 /*---------------------------------------------------------------------
@@ -75,20 +61,14 @@ FROM (
 ) with_lag
 ORDER BY years, months;
 
--- NOTE: an earlier draft used LAG() with PARTITION BY years — this
--- reset the lookback at every year boundary, so January 2024 incorrectly
--- showed NULL/no-previous-month instead of pulling December 2023's
--- revenue. Removed the PARTITION BY entirely, since month-over-month
--- growth should read as one continuous 24-month timeline, not two
--- separate 12-month ones.
---
--- FINDING: growth is extremely volatile in the first few months (>50%,
--- driven by a tiny early-2023 base), settles to a steadier ~15-20% band
--- through most of the dataset, then spikes again in Oct-Dec 2024 (29%,
--- 43%). This end-of-window spike is a data-generation artifact: late
--- signups have their single order compressed into a short remaining
--- window before the dataset ends, inflating the final months. Growth
--- in the final quarter should not be read as accelerating momentum.
+
+/*FINDING: growth is extremely volatile in the first few months (>50%,
+driven by a tiny early-2023 base), settles to a steadier ~15-20% band
+through most of the dataset, then spikes again in Oct-Dec 2024 (29%,
+43%). This end-of-window spike is a data-generation artifact: late
+signups have their single order compressed into a short remaining
+window before the dataset ends, inflating the final months. Growth
+in the final quarter should not be read as accelerating momentum.*/
 
 
 /*---------------------------------------------------------------------
