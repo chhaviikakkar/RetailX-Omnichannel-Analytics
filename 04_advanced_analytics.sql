@@ -19,7 +19,7 @@ Dataset : RetailX synthetic omnichannel retail dataset
 
 
 /*---------------------------------------------------------------------
-  Q18. RFM Segmentation
+  Q17. RFM Segmentation
 ---------------------------------------------------------------------*/
 -- All three dimensions consistently exclude Cancelled orders, same
 -- revenue-recognition rule established in Q7. Reference date for
@@ -108,7 +108,7 @@ ORDER BY customer_id;
 
 
 /*---------------------------------------------------------------------
-  Q19. Multi-channel vs. single-channel customer value
+  18. Multi-channel vs. single-channel customer value
 ---------------------------------------------------------------------*/
 -- Originally framed as "1 channel vs 2+", but only 1 of 30,000
 -- customers has touchpoints in a single channel (expected, given
@@ -170,7 +170,7 @@ ORDER BY channel_count;
 
 
 /*---------------------------------------------------------------------
-  Q22. Cohort retention by acquisition month
+  19. Cohort retention by acquisition month
 ---------------------------------------------------------------------*/
 -- Retention % is shown ONLY for cohorts that have had enough time
 -- (relative to the dataset's 2024-12-30 end date) to be fairly judged
@@ -246,7 +246,7 @@ ORDER BY e.cohort_year, e.cohort_month;
 
 
 /*---------------------------------------------------------------------
-  Q23. Acquisition channel vs. actual touchpoint channel history
+  20. Acquisition channel vs. actual touchpoint channel history
 ---------------------------------------------------------------------*/
 WITH channel_match AS (
     SELECT 
@@ -277,7 +277,7 @@ GROUP BY matched;
 
 
 /*---------------------------------------------------------------------
-  Q20. First-touch vs. last-touch attribution
+  21. First-touch vs. last-touch attribution
 ---------------------------------------------------------------------*/
 -- The hardest query in the project. For every order, finds the
 -- customer's earliest and latest marketing touchpoint that occurred
@@ -332,7 +332,7 @@ ORDER BY order_id;
 
 
 /*---------------------------------------------------------------------
-  Q21. ROAS by channel (first-touch and last-touch models)
+  22. ROAS by channel (first-touch and last-touch models)
 ---------------------------------------------------------------------*/
 -- Built directly on the Q20 attribution logic, with net_amount carried
 -- through and two new CTEs for revenue and spend per channel.
