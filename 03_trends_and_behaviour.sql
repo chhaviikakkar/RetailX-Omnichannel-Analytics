@@ -149,19 +149,19 @@ FROM (
 ) gaps
 WHERE difference_in_days IS NOT NULL;
 
--- NOTE: PARTITION BY customer_id is required here (unlike Q14) because
--- each customer has their own independent order timeline -- comparing
--- one customer's order to a DIFFERENT customer's previous order would
--- be meaningless. AVG() ignores NULLs automatically (same as COUNT()),
--- so the WHERE filter is technically redundant, but kept for clarity:
--- customers with only one order correctly produce NULL (nothing to
--- compare against) and are excluded from the average rather than
--- treated as a zero-day gap.
---
--- FINDING: average gap between a customer's consecutive orders is
--- ~54 days. Useful as a churn-risk benchmark -- customers approaching
--- or exceeding roughly 90 days since their last order likely warrant a
--- retention/win-back campaign.
+/*NOTE: PARTITION BY customer_id is required here (unlike Q14) because
+each customer has their own independent order timeline -- comparing
+one customer's order to a DIFFERENT customer's previous order would
+be meaningless. AVG() ignores NULLs automatically (same as COUNT()),
+so the WHERE filter is technically redundant, but kept for clarity:
+customers with only one order correctly produce NULL (nothing to
+compare against) and are excluded from the average rather than
+treated as a zero-day gap.
+
+FINDING: average gap between a customer's consecutive orders is
+~54 days. Useful as a churn-risk benchmark -- customers approaching
+or exceeding roughly 90 days since their last order likely warrant a
+retention/win-back campaign.*/
 
 /*=====================================================================
 END OF LEVEL 3
