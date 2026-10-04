@@ -172,16 +172,12 @@ See `findings.md` for the full list with supporting detail. Top three:
 
 ## How to Reproduce
 
-1. Run `sql/00_setup.sql` to create the database and schema.
-2. Run `sql/00_schema.sql` to create all 10 tables.
-3. Extract the dataset CSVs and update the file paths in `sql/load.sql`,
-   then run it to load all tables.
-4. Run `sql/01_data_profiling.sql` through `sql/04_advanced_analysis.sql`
-   in order — each is commented with the business question, the
-   query, and the finding it produced.
+1. Extract the CSVs from the 'data' folder to a local path of your choice.
+2. Open 00_db_setup.sql, update the BULK INSERT file paths to match where you extracted the CSVs, and run the whole script — it creates the database, schema, all 10 tables, and loads the data in one pass.
+3. Run 01_data_profiling.sql through 04_advanced_analytics.sql in order — each is commented with the business question, the query, and the finding it produced.
 
 ---
 
-*Author: [Your Name] — built as a portfolio project to demonstrate SQL
+*"This was built as a portfolio project to demonstrate SQL
 analysis, data quality auditing, and business-focused EDA for a data
-analyst role transition.*
+analyst role transition." ~ Author: Chhavi Kakkar*
