@@ -7,11 +7,6 @@ Purpose : Customer segmentation (RFM), channel diversity value, cohort
           attribution modeling (ROAS) — the most technically demanding
           section of the project, building on every pattern established
           in Levels 1-3.
-
-KNOWN GAP: CPA (cost per acquisition) by channel, originally scoped
-alongside ROAS, was not built in this pass. ROAS only. Revisit if time
-allows -- would need a definition of "new customer acquired" per
-channel under the same first-touch/last-touch attribution logic below.
 =======================================================================*/
 
 
