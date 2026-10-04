@@ -12,9 +12,6 @@ KNOWN GAP: CPA (cost per acquisition) by channel, originally scoped
 alongside ROAS, was not built in this pass. ROAS only. Revisit if time
 allows -- would need a definition of "new customer acquired" per
 channel under the same first-touch/last-touch attribution logic below.
-
-Author  : [Your Name]
-Dataset : RetailX synthetic omnichannel retail dataset
 =======================================================================*/
 
 
@@ -94,17 +91,17 @@ SELECT *,
 FROM rfm_scored
 ORDER BY customer_id;
 
--- NOTE: customers whose ENTIRE order history is Cancelled are absent
--- from this table entirely (all three CTEs use the same WHERE filter,
--- so they never qualify for any of the three dimensions) -- verified
--- deliberate, not a silent drop: row count matches
--- COUNT(DISTINCT customer_id) FROM orders WHERE order_status <> 'Cancelled'
--- exactly (24,913).
---
--- An earlier draft had the NTILE() sort directions backwards (ASC for
--- Recency, DESC for Frequency/Monetary) which inverted the scoring --
--- caught by checking a known customer's gap against their resulting
--- r_score and finding them contradictory.
+/*NOTE: customers whose ENTIRE order history is Cancelled are absent
+from this table entirely (all three CTEs use the same WHERE filter,
+so they never qualify for any of the three dimensions) -- verified
+deliberate, not a silent drop: row count matches
+COUNT(DISTINCT customer_id) FROM orders WHERE order_status <> 'Cancelled'
+exactly (24,913).
+
+An earlier draft had the NTILE() sort directions backwards (ASC for
+Recency, DESC for Frequency/Monetary) which inverted the scoring --
+caught by checking a known customer's gap against their resulting
+r_score and finding them contradictory.*/
 
 
 /*---------------------------------------------------------------------
@@ -155,18 +152,18 @@ FROM cte_final
 GROUP BY channel_count
 ORDER BY channel_count;
 
--- NOTE: an earlier draft used INNER JOIN, which silently dropped every
--- touched-but-never-purchased customer -- exactly the group needed to
--- calculate a real conversion rate. LEFT JOIN + COALESCE(..., 0) was
--- required to keep them visible as zero-value rows instead of absent.
---
--- FINDING: conversion rate (~80-83%) and average customer value
--- (~Rs.77K-84K) are essentially FLAT across channel_count 4-7, which
--- covers 97%+ of the customer base. channel_count 1-3 rows are built on
--- tiny samples (1-86 customers) and too noisy to trust. Contrary to the
--- assumption that more channel exposure drives more value, this dataset
--- shows negligible returns from reaching a customer through additional
--- channels beyond a baseline of ~4.
+/*NOTE: an earlier draft used INNER JOIN, which silently dropped every
+touched-but-never-purchased customer -- exactly the group needed to
+calculate a real conversion rate. LEFT JOIN + COALESCE(..., 0) was
+required to keep them visible as zero-value rows instead of absent.
+
+FINDING: conversion rate (~80-83%) and average customer value
+(~Rs.77K-84K) are essentially FLAT across channel_count 4-7, which
+covers 97%+ of the customer base. channel_count 1-3 rows are built on
+tiny samples (1-86 customers) and too noisy to trust. Contrary to the
+assumption that more channel exposure drives more value, this dataset
+shows negligible returns from reaching a customer through additional
+channels beyond a baseline of ~4.*/
 
 
 /*---------------------------------------------------------------------
@@ -232,18 +229,17 @@ FROM eligibility e
 JOIN retained r ON e.cohort_year = r.cohort_year AND e.cohort_month = r.cohort_month
 ORDER BY e.cohort_year, e.cohort_month;
 
--- FINDING (important limitation, shared with Q14): retention appears to
--- climb sharply and almost monotonically from ~12-17% (early 2023
--- cohorts) to ~50-76% (late 2024 cohorts). This is NOT real improvement
--- in customer loyalty -- it is the same order-date generation artifact
--- identified in Q14. Early cohorts have their orders spread across up
--- to two years, so any single month captures only a thin slice of
--- their eventual order probability; late cohorts have almost no
--- remaining window, so any order they place is mechanically compressed
--- close to signup, inflating their short-term retention. Cohort
--- retention trends in this dataset should not be read as real
--- behavioral change over time.
-
+/*FINDING (important limitation, shared with Q14): retention appears to
+climb sharply and almost monotonically from ~12-17% (early 2023
+cohorts) to ~50-76% (late 2024 cohorts). This is NOT real improvement
+in customer loyalty -- it is the same order-date generation artifact
+identified in Q14. Early cohorts have their orders spread across up
+to two years, so any single month captures only a thin slice of
+their eventual order probability; late cohorts have almost no
+remaining window, so any order they place is mechanically compressed
+close to signup, inflating their short-term retention. Cohort
+retention trends in this dataset should not be read as real
+behavioral change over time.*/
 
 /*---------------------------------------------------------------------
   20. Acquisition channel vs. actual touchpoint channel history
@@ -263,17 +259,17 @@ SELECT
 FROM channel_match
 GROUP BY matched;
 
--- FINDING: only 51.1% of customers were ever actually touched, at any
--- point, by the specific channel they were credited with for
--- acquisition -- essentially a coin flip, far below what the near-total
--- touchpoint saturation found in Q16 would suggest. For 48.9% of
--- customers, acquisition_channel does not appear anywhere in their real
--- touchpoint history. With 7 possible channels and most customers
--- touched by 6-7 of them (Q19), there's still a meaningful chance the
--- ONE specific credited channel is among the 1-2 a customer was NOT
--- touched by. This calls into question how much to trust
--- acquisition_channel as a standalone label, and directly motivates the
--- attribution modeling below as a more rigorous alternative.
+/*FINDING: only 51.1% of customers were ever actually touched, at any
+point, by the specific channel they were credited with for
+acquisition -- essentially a coin flip, far below what the near-total
+touchpoint saturation found in Q16 would suggest. For 48.9% of
+customers, acquisition_channel does not appear anywhere in their real
+touchpoint history. With 7 possible channels and most customers
+touched by 6-7 of them (Q19), there's still a meaningful chance the
+ONE specific credited channel is among the 1-2 a customer was NOT
+touched by. This calls into question how much to trust
+acquisition_channel as a standalone label, and directly motivates the
+attribution modeling below as a more rigorous alternative.*/
 
 
 /*---------------------------------------------------------------------
@@ -432,26 +428,26 @@ FROM spend_by_channel s
 JOIN revenue_by_channel r ON r.channel = s.channel
 ORDER BY roas DESC;
 
--- FINDING (headline result of the whole project): the "best channel"
--- completely flips depending on attribution model.
---   First-touch leaders: Paid Search (165.54), Social Media (154.95)
---   First-touch laggard:  Influencer (0.93 -- barely breaks even)
---   Last-touch leaders:   Social Media (107.30), Email (100.33)
---   Last-touch laggard:   Affiliate (25.65)
--- Paid Search drops from rank 1 (first-touch) to rank 6 (last-touch).
--- Influencer rises from rank 7 to rank 3. This suggests Paid Search and
--- Affiliate excel at INTRODUCING new customers (winning the first
--- touch), while Social Media and Email are more effective at CLOSING
--- the sale (winning the last touch) -- Influencer's apparent weakness
--- under first-touch is largely explained by it running far fewer
--- campaigns (7, vs. 21 for Display/SMS -- see Q10), giving it
--- statistically fewer chances to ever be anyone's literal first contact,
--- not necessarily lower quality. Neither model alone is sufficient:
--- both are extremes that credit only one touchpoint and give zero
--- credit to every touchpoint in between, likely understating channels
--- that play a supporting, mid-journey role. Budget decisions should
--- weigh a channel's ROLE in the journey (awareness vs. conversion), not
--- a single ROAS figure from one model in isolation.
+/*FINDING (headline result of the whole project): the "best channel"
+completely flips depending on attribution model.
+   First-touch leaders: Paid Search (165.54), Social Media (154.95)
+   First-touch laggard:  Influencer (0.93 -- barely breaks even)
+   Last-touch leaders:   Social Media (107.30), Email (100.33)
+   Last-touch laggard:   Affiliate (25.65)
+Paid Search drops from rank 1 (first-touch) to rank 6 (last-touch).
+Influencer rises from rank 7 to rank 3. This suggests Paid Search and
+Affiliate excel at INTRODUCING new customers (winning the first
+touch), while Social Media and Email are more effective at CLOSING
+the sale (winning the last touch) -- Influencer's apparent weakness
+under first-touch is largely explained by it running far fewer
+campaigns (7, vs. 21 for Display/SMS -- see Q10), giving it
+statistically fewer chances to ever be anyone's literal first contact,
+not necessarily lower quality. Neither model alone is sufficient:
+both are extremes that credit only one touchpoint and give zero
+credit to every touchpoint in between, likely understating channels
+that play a supporting, mid-journey role. Budget decisions should
+weigh a channel's ROLE in the journey (awareness vs. conversion), not
+a single ROAS figure from one model in isolation.*/
 
 /*=====================================================================
 END OF LEVEL 4 — END OF PROJECT ANALYSIS (20 of 23 planned questions
