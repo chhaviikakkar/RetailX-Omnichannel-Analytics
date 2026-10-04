@@ -104,11 +104,6 @@ within a channel.*/
 /*---------------------------------------------------------------------
   15. Funnel: sessions -> touchpoints -> orders, by device
 ---------------------------------------------------------------------*/
--- Device is established ONCE, from sessions.device, and used as the
--- anchor for all three stages. marketing_touchpoints.device and orders
--- (which has no device column) are intentionally not used for grouping
--- -- they'd represent a different, unrelated device dimension and mixing
--- them in was an early mistake corrected here.
 SELECT
     s.device,
     COUNT(DISTINCT s.customer_id) AS stage1_had_session,
@@ -119,19 +114,19 @@ LEFT JOIN source.marketing_touchpoints tp ON tp.customer_id = s.customer_id
 LEFT JOIN source.orders o ON o.customer_id = s.customer_id
 GROUP BY s.device;
 
--- Verification: confirmed 0 of 30,000 customers have zero touchpoints
--- (SELECT COUNT(*) FROM customers c WHERE NOT EXISTS (SELECT 1 FROM
--- marketing_touchpoints tp WHERE tp.customer_id = c.customer_id) = 0).
--- At ~17 touchpoints per customer on average (520,000 touchpoints /
--- 30,000 customers), touchpoint coverage is effectively total, which is
--- why stage1 and stage2 are identical for every device -- this is a
--- verified property of the data, not a bug.
---
--- FINDING: session -> touchpoint is a saturated, non-filtering stage
--- (100% pass rate). The only real attrition is session -> order:
--- ~84-85% conversion, consistent across Desktop (84.4%), Mobile
--- (84.5%), and Tablet (85.0%) -- device does not meaningfully predict
--- purchase conversion in this dataset.
+/*Verification: confirmed 0 of 30,000 customers have zero touchpoints
+(SELECT COUNT(*) FROM customers c WHERE NOT EXISTS (SELECT 1 FROM
+marketing_touchpoints tp WHERE tp.customer_id = c.customer_id) = 0).
+At ~17 touchpoints per customer on average (520,000 touchpoints /
+30,000 customers), touchpoint coverage is effectively total, which is
+why stage1 and stage2 are identical for every device -- this is a
+verified property of the data, not a bug.
+
+FINDING: session -> touchpoint is a saturated, non-filtering stage
+(100% pass rate). The only real attrition is session -> order:
+~84-85% conversion, consistent across Desktop (84.4%), Mobile
+(84.5%), and Tablet (85.0%) -- device does not meaningfully predict
+purchase conversion in this dataset.*/
 
 
 /*---------------------------------------------------------------------
