@@ -1,6 +1,6 @@
 # RetailX-Omnichannel-Analytics
 
-A SQL-driven analysis of a simulated omnichannel retail business,
+An SQL-driven analysis of a simulated omnichannel retail business,
 built to identify which marketing channels, product categories, and
 customer segments actually drive revenue and profit — backed by a
 documented data quality audit and real analytical trade-off decisions,
