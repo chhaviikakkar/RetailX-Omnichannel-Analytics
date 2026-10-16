@@ -137,12 +137,7 @@ FROM cte_final
 GROUP BY channel_count
 ORDER BY channel_count;
 
-/*NOTE: an earlier draft used INNER JOIN, which silently dropped every
-touched-but-never-purchased customer -- exactly the group needed to
-calculate a real conversion rate. LEFT JOIN + COALESCE(..., 0) was
-required to keep them visible as zero-value rows instead of absent.
-
-FINDING: conversion rate (~80-83%) and average customer value
+/*FINDING: conversion rate (~80-83%) and average customer value
 (~Rs.77K-84K) are essentially FLAT across channel_count 4-7, which
 covers 97%+ of the customer base. channel_count 1-3 rows are built on
 tiny samples (1-86 customers) and too noisy to trust. Contrary to the
