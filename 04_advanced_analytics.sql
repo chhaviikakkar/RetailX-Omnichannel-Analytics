@@ -91,12 +91,7 @@ from this table entirely (all three CTEs use the same WHERE filter,
 so they never qualify for any of the three dimensions) -- verified
 deliberate, not a silent drop: row count matches
 COUNT(DISTINCT customer_id) FROM orders WHERE order_status <> 'Cancelled'
-exactly (24,913).
-
-An earlier draft had the NTILE() sort directions backwards (ASC for
-Recency, DESC for Frequency/Monetary) which inverted the scoring --
-caught by checking a known customer's gap against their resulting
-r_score and finding them contradictory.*/
+exactly (24,913).*/
 
 
 /*---------------------------------------------------------------------
