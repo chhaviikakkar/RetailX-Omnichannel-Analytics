@@ -97,11 +97,6 @@ exactly (24,913).*/
 /*---------------------------------------------------------------------
   18. Multi-channel vs. single-channel customer value
 ---------------------------------------------------------------------*/
--- Originally framed as "1 channel vs 2+", but only 1 of 30,000
--- customers has touchpoints in a single channel (expected, given
--- ~17 touchpoints/customer on average -- see Q16). Reframed as a
--- trend across the full 1-7 channel_count range instead of a binary
--- split, since a binary split would be comparing n=1 against n=29,999.
 
 WITH channels AS (
     SELECT
