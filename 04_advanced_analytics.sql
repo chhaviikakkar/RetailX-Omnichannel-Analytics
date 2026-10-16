@@ -123,8 +123,8 @@ cte_final AS (
         o.order_count,
         o.total_value 
     FROM channels c
-    LEFT JOIN order_value o          -- LEFT JOIN: keep touched customers
-        ON o.customer_id = c.customer_id   -- even if they never ordered
+    LEFT JOIN order_value o          
+        ON o.customer_id = c.customer_id   
 )
 
 SELECT 
