@@ -155,11 +155,11 @@ WITH cohort_base AS (
         YEAR(signup_date) AS cohort_year,
         MONTH(signup_date) AS cohort_month,
         COUNT(*) AS cohort_size,
-        MAX(signup_date) AS latest_signup_in_cohort  -- conservative anchor:
-    FROM source.customers                             -- if even the LAST
-    GROUP BY YEAR(signup_date), MONTH(signup_date)     -- joiner has enough
-),                                                      -- runway, everyone
-                                                         -- earlier does too
+        MAX(signup_date) AS latest_signup_in_cohort  
+    FROM source.customers                             
+    GROUP BY YEAR(signup_date), MONTH(signup_date) 
+),                                                      
+                                                         
 eligibility AS (
     SELECT *,
         CASE WHEN DATEADD(MONTH, 1, latest_signup_in_cohort) <= '2024-12-30' THEN 1 ELSE 0 END AS month_1_eligible,
