@@ -149,12 +149,6 @@ channels beyond a baseline of ~4.*/
 /*---------------------------------------------------------------------
   19. Cohort retention by acquisition month
 ---------------------------------------------------------------------*/
--- Retention % is shown ONLY for cohorts that have had enough time
--- (relative to the dataset's 2024-12-30 end date) to be fairly judged
--- at that month mark -- otherwise a recent cohort would show a
--- misleadingly low/blank percentage simply because the window to
--- measure them hasn't occurred yet (right-censoring, same class of
--- issue as the returns right-censoring found in Level 1).
 
 WITH cohort_base AS (
     SELECT 
