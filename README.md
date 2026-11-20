@@ -1,34 +1,61 @@
-# RetailX-Omnichannel-Analytics
-
-A SQL-driven analysis of a simulated omnichannel retail business,
-built to identify which marketing channels, product categories, and
-customer segments actually drive revenue and profit — backed by a
-documented data quality audit and real analytical trade-off decisions,
-not just a list of charts.
-
-**Scope**: This project does not aggressively focus on data cleaning
-or transformation (no ETL layers, no bronze/silver/gold architecture).
-Data quality issues are identified, quantified, and documented rather
-than corrected upstream. The aim is to answer business questions,
-analyze the data as-is, and surface actionable insights and
-recommendations — an EDA-first project, not a data engineering one.
-
+# RetailX Omnichannel Analytics
+ 
+A SQL Server analysis of a simulated omnichannel retailer, built to find out which marketing channels, product categories and customer segments actually drive revenue and profit. It includes a documented data quality audit and an interactive dashboard of the results.
+ 
+**Stack:** SQL Server (T-SQL) | Window functions, CTEs | Cohort, RFM and attribution analysis | Interactive dashboard (HTML/JS prototype)
+ 
 ---
-
+ 
+## Live Dashboard
+ 
+[![RetailX interactive dashboard](images/dashboard.png)](https://chhaviikakkar.github.io/RetailX-Omnichannel-Analytics/)
+ 
+**[Open the interactive dashboard](https://chhaviikakkar.github.io/RetailX-Omnichannel-Analytics/)**
+ 
+- **Filters:** year, sales channel and attribution model (first-touch or last-touch). Click any channel to highlight it across charts.
+- **Charts:** ROAS by channel under both attribution models, CTR vs CPC, category share and margin, spend vs ROAS, rank change between models, cohort retention heatmap, monthly revenue.
+- **Note on filters:** the ROAS chart always covers the full period. First-touch credit can go to a touchpoint from the year before the order, so filtering it by year gives misleading numbers.
+- **How it was made:** the dashboard is a static prototype built from the aggregated outputs of the SQL queries in this repo. It is not connected to a live database. It was built with AI assistance; the analysis, queries and findings are my own.
+### At a glance (cancelled orders excluded)
+ 
+| Revenue | Orders | Marketing spend | Overall ROAS |
+|---|---|---|---|
+| ₹249.3 Cr | 97,647 | ₹4.4 Cr | 56.2 |
+ 
+---
+ 
 ## The Business Problem
-
-RetailX is a mid-size omnichannel retailer (online + physical stores)
-that wants to understand how its marketing spend across channels
-(Email, Social Media, Paid Search, Display, Affiliate, SMS, Influencer)
-translates into actual sales, and where customers are being acquired,
-retained, or lost. This project explores two years of customer, sales,
-and marketing data to answer that, using SQL Server for analysis.
-
+ 
+RetailX is a mid-size omnichannel retailer (online and physical stores). It wants to know how marketing spend across seven channels (Email, Social Media, Paid Search, Display, Affiliate, SMS, Influencer) translates into sales, and where customers are acquired, retained or lost. This project analyses two years of customer, sales and marketing data to answer that.
+ 
+**Scope:** this is an EDA-first project, not a data engineering one. There are no ETL layers or bronze/silver/gold architecture. Data quality issues are identified, quantified and documented rather than corrected upstream, and the data is analysed as it is.
+ 
+## Key Findings
+ 
+Full write-up with supporting numbers in [`findings.md`](findings.md). Headlines:
+ 
+- **Channel rankings change sharply with the attribution model.** Paid Search ranks #1 on first-touch (ROAS 165.5) but #6 on last-touch (27.2). Email and Influencer move the other way (#6 to #2 and #7 to #3). One model alone is not enough for a budget decision, because channels play different roles: some introduce customers, others close the sale.
+- **Electronics drives about 75% of revenue** almost entirely on price, not volume, and has one of the lowest margins (32.5%). The highest-revenue category and the highest-margin category are different.
+- **SMS is the weakest channel** on engagement (lowest CTR at 2.40%, highest CPC at ₹15.94) and tied for the highest overspend rate (4 of 21 campaigns).
+- **Acquisition labels are an unreliable stand-in for attribution.** 40% of customers are Organic or Direct and cannot match a paid channel by construction, so they are excluded. Among the 17,952 paid-acquired customers, 85% were touched by their credited channel at some point, but only 58.5% were touched by it on or before the acquisition date. About 4 in 10 have no earlier touch from the channel credited with acquiring them.
+- **Late-period growth and retention are data artifacts.** Month-1 retention rises from 12% to 76% across cohorts, and revenue spikes in the final months. Both come from how orders were generated, not real business momentum, so they are flagged rather than reported as trends.
+## Recommendations
+ 
+1. Re-evaluate SMS budget allocation: it is the weakest on engagement and budget discipline.
+2. Do not rely on a single attribution model for budget decisions. Weigh each channel's role (awareness vs conversion).
+3. Focus return-cost control on Electronics, where each return is expensive, rather than on reducing return rates, which are similar across categories.
+## Approach
+ 
+The analysis runs in four levels, each building on the last.
+ 
+1. **Data quality profiling.** Every table was checked for row counts, date ranges, referential integrity, NULL patterns, categorical consistency and logical impossibilities (for example, can a refund exceed the item it belongs to?). Eight or more real findings came out of this stage, including a refund bug affecting about 34.5% of returns that was traced to its root cause. See [`data_quality_log.md`](data_quality_log.md).
+2. **Core KPIs.** Revenue, AOV, CTR, CPC, budget discipline, category and brand margin, and returns, each with an explicit business rule (for example, how Cancelled orders are treated in revenue).
+3. **Trends and behaviour.** Product rankings, month-over-month growth, running totals, a session-to-order funnel and repeat-purchase gaps, using `DENSE_RANK`, `LAG` and `SUM() OVER()`.
+4. **Advanced analysis.** RFM segmentation, channel-diversity value, cohort retention, acquisition-label accuracy, and first-touch and last-touch attribution with ROAS by channel.
 ## Dataset
-
-A synthetic, relationally-consistent dataset generated to simulate a
-real omnichannel retailer's data warehouse:
-
+ 
+A synthetic, relationally consistent dataset that simulates a retailer's data warehouse.
+ 
 | Table | Rows | Table | Rows |
 |---|---|---|---|
 | customers | 30,000 | marketing_touchpoints | 520,000 |
@@ -36,148 +63,58 @@ real omnichannel retailer's data warehouse:
 | order_items | 213,931 | marketing_spend | 9,949 |
 | campaigns | 100 | products | 150 |
 | returns | 19,971 | stores | 40 |
-
-Two-year window: 2023-01-01 to 2024-12-30. All IDs use one consistent
-format per entity across every table (`CAMP001`, `CUS00001`, `PROD001`,
-etc.).
-
-## Tools
-
-- **SQL Server (T-SQL)** — all analysis
-- **Power BI** — dashboard *(in progress)*
-
-## Repository Structure
-
-```
-retailx-omnichannel-analytics/
-├── README.md                    <- you are here
-├── findings.md                  <- consolidated business insights, all 4 levels
-├── data_quality_log.md          <- full data quality audit write-up
-└── sql/
-    ├── 00_db_setup.sql           <- database + schema + table creation
-    ├── 01_data_profiling.sql     <- Level 1: data quality checks
-    ├── 02_core_kpi.sql          <- Level 2: revenue, CTR/CPC, overspend, margin, returns
-    ├── 03_trends_and_behaviour.sql   <- Level 3: rankings, growth %, running totals, funnel
-    └── 04_advanced_analytics.sql  <- Level 4: RFM, cohorts, attribution, ROAS
-```
-
-## Approach
-
-The project follows four levels, each building on the last:
-
-1. **Data Quality Profiling** — before trusting a single metric, every
-   table was checked for row counts, date ranges, referential
-   integrity, NULL patterns, categorical consistency, and logical
-   impossibilities (e.g., can a refund exceed the order it belongs
-   to?). 8+ real findings came out of this stage — see
-   `data_quality_log.md` for the full write-up, including a bug that
-   affected ~34.5% of all returns and was traced to its root cause.
-2. **Core KPIs** — revenue, AOV, CTR, CPC, campaign budget discipline,
-   category/brand profitability and margin, return rate and refund
-   value — each with an explicit, documented business rule (e.g., how
-   Cancelled and Returned orders are treated in revenue).
-3. **Trends & Behavior Analysis** — product rankings within category,
-   month-over-month growth, running revenue totals, a 3-stage
-   marketing funnel, and repeat-purchase gap analysis, using window
-   functions (`RANK`, `LAG`, `SUM() OVER()`).
-4. **Advanced Analysis** — RFM customer segmentation, channel-diversity
-   value analysis, cohort retention, acquisition-label accuracy, and
-   first-touch/last-touch marketing attribution with ROAS by channel —
-   the most technically demanding section, tying together every
-   pattern from the levels before it.
-
-## Key Findings
-
-Full write-up with supporting numbers in **`findings.md`**. Headlines:
-
-- **The "best marketing channel" completely flips** depending on
-  whether you credit first-touch or last-touch attribution — Paid
-  Search leads one model, Social Media leads the other. Neither model
-  alone is sufficient for a budget decision.
-- **Electronics drives ~75% of category revenue** almost entirely on
-  price, not volume — and has one of the lowest profit margins of any
-  category. Highest revenue and highest margin are not the same
-  category.
-- **Only 51% of customers** were ever actually touched by the specific
-  channel they're credited with for acquisition — a single static
-  label is an unreliable substitute for real attribution.
-- **SMS is the weakest channel** on both engagement (lowest CTR/highest
-  CPC) and budget discipline (tied-highest overspend rate).
-- Several growth and retention trends in the dataset's final months
-  are data-generation artifacts, not real business signals — explained
-  and flagged rather than misreported.
-
+ 
+The window runs from 2023-01-01 to 2024-12-30. IDs follow one format per entity across all tables (`CAMP001`, `CUS00001`, `PROD001`, and so on).
+ 
 ## Data Quality: What Was Found and How It Was Handled
-
-This project treats data quality as part of the analysis, not a
-prerequisite to skip past. Full detail in `data_quality_log.md`;
-highlights:
-
-- Verified referential integrity across 5+ key relationships (zero
-  orphans), confirmed via both count-comparison and `NOT EXISTS`
-  patterns.
-- Traced a refund calculation bug affecting ~34.5% of returns at the
-  item level to its root cause (pre-discount vs. post-discount value
-  mismatch) rather than just flagging the symptom.
-- Identified and explained a right-censoring issue affecting returns
-  near the dataset's end date.
-- Made and documented explicit judgment calls (e.g., 47 customers with
-  pre-window acquisition dates: flagged and retained rather than
-  deleted, with reasoning for the decision).
-
+ 
+Data quality is treated as part of the analysis, not a step to skip past. Details are in [`data_quality_log.md`](data_quality_log.md).
+ 
+- Referential integrity was verified across five key relationships using count comparisons, with zero orphans.
+- A refund calculation issue affecting about 34.5% of returns at item level was traced to pre-discount vs post-discount values, rather than only flagging the symptom.
+- A right-censoring issue affecting returns near the dataset's end date was identified and explained.
+- Judgment calls are documented. For example, 47 customers with pre-window acquisition dates were flagged and retained rather than deleted, with the reasoning stated.
 ## Notable Technical Challenges
-
-A few bugs caught and fixed during this project, kept visible in the
-SQL comments rather than silently corrected, because the debugging
-process is itself worth showing:
-
-- **Join fan-out**: multiple queries initially joined transactional
-  tables (`order_items`, `returns`, `marketing_touchpoints`) on a
-  partial key (e.g., `order_id` alone instead of `order_id` +
-  `product_id`), which silently multiplied rows and inflated
-  aggregates by orders of magnitude before being caught via sanity
-  checks against known totals.
-- **Window function partitioning**: an early budget-overspend query
-  used `SUM() OVER (ORDER BY campaign_id)` with no `PARTITION BY`,
-  producing a running total across *all* campaigns instead of each
-  campaign's own total — caught because the resulting numbers were
-  implausible at a glance.
-- **`LEFT JOIN` + `WHERE` on the joined table**: a recurring trap where
-  filtering on a right-hand-side column after a `LEFT JOIN` silently
-  behaves like an `INNER JOIN`, dropping exactly the rows the `LEFT
-  JOIN` was meant to preserve. Hit in the funnel analysis, the
-  channel-value analysis, and the attribution model — resolved by
-  moving the condition into the `JOIN ... ON` clause instead.
-
-## Recommendations
-
-See `findings.md` for the full list with supporting detail. Top three:
-
-1. Re-evaluate SMS budget allocation — weakest performer on engagement
-   and budget discipline.
-2. Don't rely on a single attribution model for marketing budget
-   decisions — weigh a channel's role (awareness vs. conversion).
-3. Prioritize Electronics for return-cost control, not return-rate
-   reduction.
-
+ 
+These bugs were caught and fixed during the project. They are left visible in the SQL comments because the debugging process is worth showing.
+ 
+- **Join fan-out:** several queries first joined transactional tables (`order_items`, `returns`, `marketing_touchpoints`) on a partial key, such as `order_id` alone instead of `order_id` and `product_id`. This silently multiplied rows and inflated aggregates until sanity checks against known totals caught it.
+- **Window function partitioning:** an early overspend query used `SUM() OVER (ORDER BY campaign_id)` with no `PARTITION BY`, giving a running total across all campaigns instead of each campaign's own total.
+- **`LEFT JOIN` + `WHERE`:** filtering on a right-hand column after a `LEFT JOIN` behaves like an `INNER JOIN` and drops the rows the `LEFT JOIN` was meant to keep. This came up in the funnel, channel-value and attribution queries, and was fixed by moving the condition into `ON`.
 ## Limitations
-
+ 
 - CPA (cost per acquisition) by channel was scoped but not completed.
-- Attribution modeling uses only first-touch and last-touch; no credit
-  is given to touchpoints in the middle of a customer's journey.
-- Growth and retention metrics in the final months of the dataset are
-  inflated by order-date generation mechanics — documented in detail
-  in `findings.md`.
-- This project intentionally did not pursue heavy data cleaning/ETL.
-
+- Attribution uses only first-touch and last-touch, with no credit for touchpoints in between. It also counts every touchpoint type, including impressions. A separate check using only clicks and engagements keeps the introducer vs closer pattern (Paid Search falls from #2 to #6, Email and Influencer rise), but Social Media then ranks #1 on both models. The "ranking changes" conclusion holds; "the best channel flips completely" depends on what counts as a touch.
+- Growth and retention in the dataset's final months are inflated by order-date generation, as described in `findings.md`.
+- This project deliberately did not pursue heavy cleaning or ETL.
+- The dashboard is a static prototype. A native Tableau or Power BI version is planned.
+## Repository Structure
+ 
+```
+RetailX-Omnichannel-Analytics/
+├── README.md                       <- you are here
+├── findings.md                     <- business insights from all four levels
+├── data_quality_log.md             <- full data quality audit
+├── 00_db_setup.sql                 <- database, schema, tables, data load
+├── 01_data_profiling.sql           <- Level 1: data quality checks
+├── 02_core_kpi.sql                 <- Level 2: revenue, CTR/CPC, overspend, margin, returns
+├── 03_trends_and_behaviour.sql     <- Level 3: rankings, growth, running totals, funnel
+├── 04_advanced_analytics.sql       <- Level 4: RFM, cohorts, attribution, ROAS
+├── data/                           <- source CSVs
+├── docs/index.html                 <- interactive dashboard (GitHub Pages)
+└── images/dashboard.png            <- dashboard screenshot
+```
+ 
+**Suggested reading order:** this README, then `findings.md`, then `data_quality_log.md`, then the SQL files in numeric order.
+ 
 ## How to Reproduce
-
-1. Extract the CSVs from the 'data' folder to a local path of your choice.
-2. Open 00_db_setup.sql, update the BULK INSERT file paths to match where you extracted the CSVs, and run the whole script — it creates the database, schema, all 10 tables, and loads the data in one pass.
-3. Run 01_data_profiling.sql through 04_advanced_analytics.sql in order — each is commented with the business question, the query, and the finding it produced.
-
+ 
+1. Extract the CSVs from the `data` folder to a local path.
+2. Open `00_db_setup.sql`, update the `BULK INSERT` file paths to match, and run the whole script. It creates the database, schema and all 10 tables, and loads the data.
+3. Run `01_data_profiling.sql` through `04_advanced_analytics.sql` in order. Each query is commented with its business question, the query itself and the finding it produced.
 ---
-
-*"This was built as a portfolio project to demonstrate SQL
-analysis, data quality auditing, and business-focused EDA for a data
-analyst role transition." ~ Author: Chhavi Kakkar*
+ 
+Built as a portfolio project to demonstrate SQL analysis, data quality auditing and business-focused EDA.
+ 
+**Chhavi Kakkar** | [LinkedIn](https://linkedin.com/in/chhavi-kakkar) | [GitHub](https://github.com/chhaviikakkar) | chhaviikakkar@gmail.com
+ 
