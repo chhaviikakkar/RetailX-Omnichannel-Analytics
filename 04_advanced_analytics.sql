@@ -223,7 +223,10 @@ WITH channel_match AS (
         c.customer_id,
         MAX(CASE WHEN m.channel = c.acquisition_channel THEN 1 ELSE 0 END) AS matched
     FROM source.customers c
-    JOIN source.marketing_touchpoints m ON c.customer_id = m.customer_id
+    LEFT JOIN source.marketing_touchpoints m 
+        ON  c.customer_id = m.customer_id
+        AND CAST(m.timestamp AS DATE) <= c.acquisition_date   -- condition in ON, not WHERE
+    WHERE c.acquisition_channel NOT IN ('Organic', 'Direct')
     GROUP BY c.customer_id
 )
 SELECT 
@@ -233,17 +236,15 @@ SELECT
 FROM channel_match
 GROUP BY matched;
 
-/*FINDING: only 51.1% of customers were ever actually touched, at any
-point, by the specific channel they were credited with for
-acquisition -- essentially a coin flip, far below what the near-total
-touchpoint saturation found in Q16 would suggest. For 48.9% of
-customers, acquisition_channel does not appear anywhere in their real
-touchpoint history. With 7 possible channels and most customers
-touched by 6-7 of them (Q19), there's still a meaningful chance the
-ONE specific credited channel is among the 1-2 a customer was NOT
-touched by. This calls into question how much to trust
-acquisition_channel as a standalone label, and directly motivates the
-attribution modeling below as a more rigorous alternative.*/
+/*FINDING: Organic and Direct customers (12,048 of 30,000) are excluded because
+no paid touchpoint can match them. Of the 17,952 paid-acquired customers, 58.51%
+(10,503) had a touchpoint from their credited channel on or before their
+acquisition date; 41.49% (7,449) did not. Counting touches at any time, the
+match rate rises to 85.43% (15,336), so a large share of matches happen only
+after the customer was already acquired. A single acquisition label is an
+unreliable substitute for real attribution.
+Note: the date condition sits in the LEFT JOIN's ON clause, so customers with
+no qualifying touch count as unmatched instead of dropping out.*/
 
 
 /*---------------------------------------------------------------------
