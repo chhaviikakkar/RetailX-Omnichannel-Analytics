@@ -2,7 +2,7 @@
  
 A SQL Server analysis of a simulated omnichannel retailer, built to find out which marketing channels, product categories and customer segments actually drive revenue and profit. It includes a documented data quality audit and an interactive dashboard of the results.
  
-**Stack:** SQL Server (T-SQL) | Window functions, CTEs | Cohort, RFM and attribution analysis | Interactive dashboard (HTML/JS prototype)
+**Stack:** SQL Server (T-SQL) | Window functions, CTEs | Cohort, RFM and attribution analysis | Interactive dashboard
  
 ---
  
